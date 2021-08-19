@@ -2,13 +2,12 @@ import base64
 import mimetypes
 import os
 
-from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 
 
-## 01 - Injection Attacks
+# 01 - Injection Attacks
 
 def norm(s):
     return s.strip().replace(' ', '').lower()
@@ -23,13 +22,13 @@ def sql(request):
     correct = (norm(name) == norm(expected_sql))
 
     return render(request, 'vulnerable/injection/sql.html',
-            {'name': name, 'correct': correct, 'solution_sql': solution_sql})
+                  {'name': name, 'correct': correct, 'solution_sql': solution_sql})
 
 
 def file_access(request):
     msg = request.GET.get('msg', '')
     return render(request, 'vulnerable/injection/file_access.html',
-            {'msg': msg})
+                  {'msg': msg})
 
 
 def user_pic(request):
@@ -48,7 +47,7 @@ def user_pic(request):
         else:
             msg = "Keep trying..."
         return render(request, 'vulnerable/injection/file_access.html',
-                {'msg': msg})
+                      {'msg': msg})
 
     return HttpResponse(data, content_type=mimetypes.guess_type(filename)[0])
 
@@ -86,10 +85,10 @@ def code_execution(request):
             data = ''
 
     return render(request, 'vulnerable/injection/code_execution.html',
-            {'first_name': request.POST.get('first_name', ''), 'data': data})
+                  {'first_name': request.POST.get('first_name', ''), 'data': data})
 
 
-## 02 - Broken Authentication & Session Management
+# 02 - Broken Authentication & Session Management
 
 
 ## 03 - XSS
@@ -125,6 +124,7 @@ users = {
     }
 }
 
+
 def dor_user_profile(request, userid=None):
     env = {}
     user_data = users.get(userid)
@@ -138,19 +138,20 @@ def dor_user_profile(request, userid=None):
     env['user_id'] = userid
     return render(request, 'vulnerable/direct_object_references/profile.html', env)
 
-## 05 - Security Misconfiguration
+
+# 05 - Security Misconfiguration
 
 def boom(request):
     raise Exception('boom')
 
 
-## 06 - Sensitive Data Exposure
+# 06 - Sensitive Data Exposure
 
 def exposure_login(request):
     return redirect('exposure')
 
 
-## 07 - Missing Function Level Access Control
+# 07 - Missing Function Level Access Control
 
 def missing_access_control(request):
     env = {}
@@ -159,7 +160,7 @@ def missing_access_control(request):
     return render(request, 'vulnerable/access_control/non_admin.html', env)
 
 
-## 08 - CSRF
+# 08 - CSRF
 
 @csrf_exempt
 def csrf_image(request):
@@ -167,11 +168,11 @@ def csrf_image(request):
     return render(request, 'vulnerable/csrf/image.html', env)
 
 
-## 09 - Using Known Vulnerable Components
+# 09 - Using Known Vulnerable Components
 # No exercise, just discussion?
 
 
-## 10 - Unvalidated Redirects & Forwards
+# 10 - Unvalidated Redirects & Forwards
 
 def unvalidated_redirect(request):
     url = request.GET.get('url')
@@ -188,7 +189,6 @@ def unvalidated_forward(request):
     env = {'fwd': forward}
     return render(request, 'vulnerable/redirects/forward_failed.html', env)
 
+
 def admin(request):
     return render(request, 'vulnerable/redirects/admin.html', {})
-
-
