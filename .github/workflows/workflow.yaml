@@ -6,15 +6,14 @@ jobs:
   snyk-scan:
     runs-on: ubuntu-latest
     steps:
-      # - uses: actions/checkout@main
-      # - name: pip install
-      #   run: pip install -r src/code/requirements.txt && pwd && which python && which pip
+      - uses: actions/checkout@main
+      - name: pip install
+        run: pip install -r requirements.txt 
 
       - name: Run Snyk to check for vulns
         uses: snyk/actions/python-3.7@master
         env:
           SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
-        run: pip install -r src/code/requirements.txt && pwd
         with:
-          args: --file=src/code/requirements.txt
+          args: --file=requirements.txt
   
