@@ -8,6 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@main
       - name: pip install
+        working-directory: src/code/
         run: pip install -r requirements.txt
 
       - name: Run Snyk to check for vulns
